@@ -1,0 +1,70 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SlashAnim : MonoBehaviour
+{
+    [SerializeField]
+    private Sprite[] Slashsprites;
+
+    [SerializeField]
+    private float timeThreshold = 0.06f;
+
+    [SerializeField]
+    private int damage = 35;
+
+    private float timer;
+    private int state = 0;
+
+    private SpriteRenderer sr;
+
+    private void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+    }
+
+
+    private void Update()
+    {
+        if(Time.time > timer)
+        {
+            if (state == Slashsprites.Length)
+            {
+                Destroy(gameObject);
+                return;
+
+            }
+
+            else
+            {
+                sr.sprite = Slashsprites[state];
+                state++;
+
+                timer = Time.time + timeThreshold;
+
+
+            }
+
+        }
+
+
+
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Wolf"))
+        {
+
+            collision.GetComponent<WolfHealth>().TakeDamage(damage);
+
+        }
+
+
+    }
+
+
+
+
+}
